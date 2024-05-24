@@ -27,23 +27,30 @@ def scraping(url, number_of_news, news_df):
     while counter <= number_of_news:
         # Open the website & wait for the page to load
         driver.get(url + '/page/' + str(page_index) + '/')
-        time.sleep(3)
+        time.sleep(5)
 
         # Get the content of the page
         soup = BeautifulSoup(driver.page_source, 'html.parser')
 
         # Search the articles in the page
-        table = soup.find('div', attrs={'class': 'sc-ebDIoU'})
+        soup = soup.find('div', attrs={'span': 12})
+        table = soup.findChild('div', recursive=True)
 
         if table is None:
             print("ERROR : Unable to find the articles !")
             raise
 
-        for row in table.findAll('div', attrs={'class': 'sc-gcgBMM'}):
+        # Drop tags div with a child tag p
+        for match in table.findAll('p'):
+            match.parent.decompose()
+
+        # Found all the links in the table
+        links = table.findAll('a')
+        for link in links:
             article = {}
             
             # Get the content of the article
-            article = article_scraping(driver, url + row.a['href'])
+            article = article_scraping(driver, url + link['href'])
 
             # Save the article in the DataFrame
             news_df = news_df._append(article, ignore_index=True)
@@ -61,14 +68,14 @@ def scraping(url, number_of_news, news_df):
 def article_scraping(driver, url):
     # Open the website & wait for the page to load
     driver.get(url)
-    time.sleep(3)
+    time.sleep(5)
 
     # Get the content of the page
     article_soup = BeautifulSoup(driver.page_source, 'html.parser')
 
     # Get the title of the article
     try:
-        title = article_soup.find('h1', attrs={'class': 'sc-eRVdyy'}).text
+        title = article_soup.find('h1').text
     except AttributeError:
         title = 'ERROR'
         print("ERROR : Unable to find the title !")

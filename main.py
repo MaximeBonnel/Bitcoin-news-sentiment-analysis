@@ -24,6 +24,5 @@ print("Sentiment analysis done !")
 display_data(NEWS_PATH)
 print("Data have been displayed !\n")
 
-#TODO
-# - Try to get the date of the news
+#TODO:
 # - Add some graphs to display the data
