@@ -3,4 +3,5 @@ transformers
 pandas
 beautifulsoup4
 selenium
+requests
 streamlit
