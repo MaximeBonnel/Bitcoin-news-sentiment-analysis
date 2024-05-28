@@ -1,8 +1,10 @@
+import os
+import time
 import pandas as pd
 from transformers import pipeline
 from transformers import AutoTokenizer
 
-def sentiment_analysis(news_path):
+def sentiment_analysis(news_path, news_history_path):
     # Parameters
     MODEL = "mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis"
     MAX_TOKEN = 510
@@ -40,6 +42,37 @@ def sentiment_analysis(news_path):
 
     # Save the dataframe in the CSV file
     save_in_csv(news_path, data)
+
+    # Add the global news sentiment in the news history
+    news_history(news_path, news_history_path)
+
+def news_history(news_path, news_history_path):
+    # If there is a news history file, load it otherwise create it
+    if os.path.exists(news_history_path):
+        # Load the historical news
+        news_history_df = pd.read_csv(news_history_path, sep=';')
+    else:
+        # Create a DataFrame
+        news_history_df = pd.DataFrame(columns=['Date', 'sentiment'])
+
+    # Load the news
+    news_df = pd.read_csv(news_path, sep=';')
+
+    # Add the news sentiment in the news history DataFrame
+    sentiment_counts = news_df['sentiment'].value_counts()
+
+    positive_count = sentiment_counts.get('positive')
+    negative_count = sentiment_counts.get('negative')
+
+    if positive_count > negative_count:
+        news_history_df.loc[len(news_history_df)] = [time.strftime("%d-%m-%y"), 'positive']
+    elif positive_count < negative_count:
+        news_history_df.loc[len(news_history_df)] = [time.strftime("%d-%m-%y"), 'negative']
+    else:
+        news_history_df.loc[len(news_history_df)] = [time.strftime("%d-%m-%y"), 'neutral']
+
+    # Save the news history in a CSV file
+    save_in_csv(news_history_path, news_history_df)
 
 def save_in_csv(news_path, news_df):
     # Save the news in a CSV file

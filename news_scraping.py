@@ -14,8 +14,7 @@ def news_scraping(news_path, number_of_news):
     news_df = scraping(URL, number_of_news, news_df)
 
     # Save the news in a CSV file
-    save_in_csv(news_path, news_df)
-    
+    save_in_csv(news_path, news_df)   
 
 def scraping(url, number_of_news, news_df):
     # Initializations
