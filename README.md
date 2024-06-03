@@ -2,9 +2,12 @@
 
 Sentiment analysis for Bitcoin news from Bitcoin.com
 
+![Today News](images/image1.png)
+![Historical news](images/image2.png)
+
 ## Requirements
 
-To run this project, you will need Python 3.11 installed on your machine.
+To run this project, you will need Python 3.11 installed on your machine. This guide is tailored for Windows users.
 
 ## Installation
 
@@ -24,4 +27,14 @@ To run this project, you will need Python 3.11 installed on your machine.
 
    ```bash
    pip install -r requirements.txt
+   ```
+
+> You can also setup the environnement with the conda file in data folder.
+
+## Run the Project
+
+To run the sentiment analysis application, execute the following command:
+
+   ```bash
+   streamlit run main.py
    ```
