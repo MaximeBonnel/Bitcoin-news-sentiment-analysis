@@ -29,7 +29,7 @@ To run this project, you will need Python 3.11 installed on your machine. This g
    pip install -r requirements.txt
    ```
 
-> You can also setup the environnement with the conda file in data folder.
+> You can also setup the environnement with the conda file "condaEnv.yml".
 
 ## Run the Project
 
@@ -44,5 +44,5 @@ To run the sentiment analysis application, execute the following command:
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 #
-#
+
 ##### By Maxime
